@@ -10,11 +10,11 @@ export PolarAxis, save, Axis
 # PLOTTING
 ###########################################################################
 # Returns the PolarAxis object containing a plot of the gain pattern
-function plot(gp::GainPattern; ymin::Real=0.0, ymax=nothing, showsamples::Bool=false, lastleg::Bool=true, style=nothing, degrees::Bool=false)
-	plot([gp], ymin=ymin, ymax=ymax, showsamples=showsamples, lastleg=lastleg, styles=[style],degrees=degrees)
+function plot(gp::GainPattern; title=nothing, ymin::Real=0.0, ymax=nothing, showsamples::Bool=false, lastleg::Bool=true, style=nothing, degrees::Bool=false)
+	plot([gp], title=title, ymin=ymin, ymax=ymax, showsamples=showsamples, lastleg=lastleg, styles=[style],degrees=degrees)
 end
 
-function plot(gp_array::Vector{GainPattern}; ymin::Real=0.0, ymax=nothing, showsamples::Bool=false, lastleg::Bool=true, legendentries=nothing, colors=nothing, styles=nothing, degrees::Bool=false)
+function plot(gp_array::Vector{GainPattern}; title=nothing,ymin::Real=0.0, ymax=nothing, showsamples::Bool=false, lastleg::Bool=true, legendentries=nothing, colors=nothing, styles=nothing, degrees::Bool=false)
 
 	# Create an array with length of angles for each gain pattern
 	# Create an array with minimum mean gain for each pattern
@@ -78,7 +78,7 @@ function plot(gp_array::Vector{GainPattern}; ymin::Real=0.0, ymax=nothing, shows
 			plot_array[i] = plotgains(gp.angles, gp.meangains, ymin, lastleg, legendentries[i], styles[i])
 		end
 		#xticklabel=$\pgfmathprintnumber{\tick}^\circ$
-		pa = PolarAxis(plot_array, ymax=ymax, yticklabel="{\\pgfmathparse{$ymin+\\tick} \\pgfmathprintnumber{\\pgfmathresult}}", xticklabel=xtl)
+		pa = PolarAxis(plot_array, title=title, ymax=ymax, yticklabel="{\\pgfmathparse{$ymin+\\tick} \\pgfmathprintnumber{\\pgfmathresult}}", xticklabel=xtl)
 
 	end
 
