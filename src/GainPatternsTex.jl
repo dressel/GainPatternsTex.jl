@@ -45,7 +45,9 @@ function plot(gp_array::Vector{GainPattern}; title=nothing,ymin::Real=0.0, ymax=
 			ymax < ymin ? error(emsg) : nothing
 		end
 
-		gain_plot = plotgains(gp.angles, gp.meangains, ymin, lastleg)
+		le = legendentries == nothing ? nothing : legendentries[1]
+		st = styles == nothing ? nothing : styles[1]
+		gain_plot = plotgains(gp.angles, gp.meangains, ymin, lastleg, le, st)
 		plot_array = plotsamples(gp.angles, gp.samples, ymin)
 		push!(plot_array, gain_plot)
 		pa = PolarAxis(plot_array, ymax=ymax, yticklabel="{\\pgfmathparse{$ymin+\\tick} \\pgfmathprintnumber{\\pgfmathresult}}")
@@ -118,9 +120,19 @@ function plotsamples{T1<:Real,T2<:Real}(angles::Vector{T1}, samples::Vector{Vect
 	num_angles = length(angles)
 	plot_array = Array(Plots.Linear, num_angles)
 
-	# Create a linear plot for each sample
+	# Create a linear plot of the samples for each angle
 	for i = 1:num_angles
-		plot_array[i] = Plots.Linear(angles[i]*ones(length(samples[i])), samples[i]-ymin, mark="x", style="blue,smooth")
+		# check that 
+		num_samples = length(samples[i])
+		temp_ones = Float64[]
+		temp_samples = Float64[]
+		for j = 1:num_samples
+			if validgain(samples[i][j])
+				push!(temp_ones, 1)
+				push!(temp_samples, samples[i][j]-ymin)
+			end
+		end
+		plot_array[i] = Plots.Linear(angles[i]*temp_ones, temp_samples, mark="x", style="blue,smooth")
 	end
 
 	# Return the array of plots
