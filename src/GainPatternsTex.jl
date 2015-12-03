@@ -39,7 +39,7 @@ function plot(gp_array::Vector{GainPattern}; title=nothing,ymin::Real=0.0, ymax=
 		end
 
 		ymin = min(ymin, mingain, 0.0)
-		if typeof(ymax) != Nothing
+		if typeof(ymax) != Void
 			ymax -= ymin
 			emsg = "ymax is smaller than smallest gain, 0, and specified ymin"
 			ymax < ymin ? error(emsg) : nothing
@@ -51,7 +51,7 @@ function plot(gp_array::Vector{GainPattern}; title=nothing,ymin::Real=0.0, ymax=
 		pa = PolarAxis(plot_array, ymax=ymax, yticklabel="{\\pgfmathparse{$ymin+\\tick} \\pgfmathprintnumber{\\pgfmathresult}}")
 	else
 		ymin = min(ymin, mingain, 0.0)
-		if typeof(ymax) != Nothing
+		if typeof(ymax) != Void
 			ymax -= ymin
 			emsg = "ymax is smaller than smallest gain, 0, and specified ymin"
 			ymax < ymin ? error(emsg) : nothing
@@ -59,10 +59,10 @@ function plot(gp_array::Vector{GainPattern}; title=nothing,ymin::Real=0.0, ymax=
 
 		# legendentries, styles must be indexable
 		if legendentries == nothing
-			legendentries = Array(Nothing, num_gp)
+			legendentries = Array(Void, num_gp)
 		end
 		if styles == nothing
-			styles = Array(Nothing, num_gp)
+			styles = Array(Void, num_gp)
 		end
 
 		# Do we include the degrees
